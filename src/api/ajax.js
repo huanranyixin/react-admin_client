@@ -1,7 +1,9 @@
 import axios from 'axios';
 import {message} from 'antd';
 // mock数据
-import '../mockup/mock';
+if (process.env.NODE_ENV === 'development') {
+    require('../mockup/mock');
+}
 
 export default function ajax(url, data = {}, method = 'GET') {
     return new Promise( resolve => {

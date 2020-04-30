@@ -7,6 +7,7 @@ import logo from './images/logo.png';
 import './login.less';
 import {reqLogin} from '../../api/api';
 import memoryUtils from '../../utils/memoryUtils';
+import storageUtils from '../../utils/storageUtils';
 const Item = Form.Item;
 
 const Login = () => {
@@ -19,12 +20,18 @@ const Login = () => {
 
         if (data.code === 1) {
             // 登录成功
+            storageUtils.saveUser({username: data.username});
             memoryUtils.user = {username: data.username};
             history.replace('/');
         } else {
             message.error(data.message)
         }
     };
+    // 判断是否已登录
+    if (storageUtils.getUser().username) {
+        memoryUtils.user = storageUtils.getUser();
+        history.replace('/');
+    }
     /**
      * 自定义表单的校验规则
      */
