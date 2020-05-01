@@ -1,57 +1,60 @@
 import React from 'react';
 import { Form, Input, Button, message } from 'antd';
-import { UserOutlined ,LockOutlined } from '@ant-design/icons'
-import { useHistory } from 'react-router-dom'
+import { UserOutlined ,LockOutlined } from '@ant-design/icons';
+import { useHistory } from 'react-router-dom';
 
 import logo from './images/logo.png';
 import './login.less';
-import {reqLogin} from '../../api/api';
+import { reqLogin } from '../../api/api';
 import memoryUtils from '../../utils/memoryUtils';
 import storageUtils from '../../utils/storageUtils';
 const Item = Form.Item;
 
-const Login = () => {
-    const history = useHistory();
-    /*
+/*
     登录
     */
-    const login =async values => {
-        let data = await reqLogin(values.username, values.password);
+const login =async (values, history) => {
+    let data = await reqLogin(values.username, values.password);
 
-        if (data.code === 1) {
-            // 登录成功
-            storageUtils.saveUser({username: data.username});
-            memoryUtils.user = {username: data.username};
-            history.replace('/');
-        } else {
-            message.error(data.message)
-        }
-    };
+    if (data.code === 1) {
+        // 登录成功
+        storageUtils.saveUser({username: data.username});
+        memoryUtils.user = {username: data.username};
+        history.replace('/');
+    } else {
+        message.error(data.message)
+    }
+};
+/**
+ * 自定义表单的校验规则
+ */
+const validator = (value) => {
+    // console.log(rule, value)
+    const length = value && value.length;
+    const pwdReg = /^[a-zA-Z0-9_]+$/;
+
+    if (!value) {
+        // callback 如果不传参代表校验成功，如果传参代表校验失败，并且会提示错误
+        return Promise.reject(' 必须输入密码');
+    } else if (length < 4) {
+        return Promise.reject(' 密码必须大于 4  位');
+    } else if (length > 12) {
+        return Promise.reject(' 密码必须小于 12  位');
+    } else if (!pwdReg.test(value)) {
+        return Promise.reject(' 密码必须是英文、数组或下划线组成');
+    } else {
+        return Promise.resolve();
+    }
+};
+
+const Login = () => {
+    const history = useHistory();
+    
     // 判断是否已登录
     if (storageUtils.getUser().username) {
         memoryUtils.user = storageUtils.getUser();
         history.replace('/');
     }
-    /**
-     * 自定义表单的校验规则
-     */
-    const validator = (value) => {
-        // console.log(rule, value)
-        const length = value && value.length;
-        const pwdReg = /^[a-zA-Z0-9_]+$/;
-        if (!value) {
-            // callback 如果不传参代表校验成功，如果传参代表校验失败，并且会提示错误
-            return Promise.reject(' 必须输入密码')
-        } else if (length < 4) {
-            return Promise.reject(' 密码必须大于 4  位')
-        } else if (length > 12) {
-            return Promise.reject(' 密码必须小于 12  位')
-        } else if (!pwdReg.test(value)) {
-            return Promise.reject(' 密码必须是英文、数组或下划线组成')
-        } else {
-            return Promise.resolve() // 必须调用 callback
-        }
-    };
     return (
         <div className='login'>
             <header className='login-header'>
@@ -60,7 +63,7 @@ const Login = () => {
             </header>
             <section className='login-content'>
                 <h3>用户登陆</h3>
-                <Form onFinish={login} className="login-form">
+                <Form onFinish={(values, history) => {login(values, history)}} className="login-form">
                     <Item name="username"
                           rules={[
                               {required: true, whitespace: true, message: ' 必须输入用户名'},
