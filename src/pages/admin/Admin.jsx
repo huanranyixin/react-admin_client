@@ -27,7 +27,7 @@ const Login = () =>  {
             </Sider>
             <Layout>
             <Header>Header</Header>
-            <Content style={{backgroundColor: 'white'}}>
+            <Content style={{backgroundColor: 'white', margin: '20px 20px 0'}}>
                 <Switch>
                     <Route path='/home' component={Home}/>
                     <Route path='/category' component={Category}/>
