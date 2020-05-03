@@ -10,21 +10,6 @@ import memoryUtils from '../../utils/memoryUtils';
 import storageUtils from '../../utils/storageUtils';
 const Item = Form.Item;
 
-/*
-    登录
-    */
-const login =async (values, history) => {
-    let data = await reqLogin(values.username, values.password);
-
-    if (data.code === 1) {
-        // 登录成功
-        storageUtils.saveUser({username: data.username});
-        memoryUtils.user = {username: data.username};
-        history.replace('/');
-    } else {
-        message.error(data.message)
-    }
-};
 /**
  * 自定义表单的校验规则
  */
@@ -55,6 +40,21 @@ const Login = () => {
         memoryUtils.user = storageUtils.getUser();
         history.replace('/');
     }
+    /*
+    登录
+    */
+    const login =async (values) => {
+        let data = await reqLogin(values.username, values.password);
+
+        if (data.code === 1) {
+            // 登录成功
+            storageUtils.saveUser({username: data.username});
+            memoryUtils.user = {username: data.username};
+            history.replace('/');
+        } else {
+            message.error(data.message)
+        }
+    };
     return (
         <div className='login'>
             <header className='login-header'>
@@ -63,7 +63,7 @@ const Login = () => {
             </header>
             <section className='login-content'>
                 <h3>用户登陆</h3>
-                <Form onFinish={(values, history) => {login(values, history)}} className="login-form">
+                <Form onFinish={login} className="login-form">
                     <Item name="username"
                           rules={[
                               {required: true, whitespace: true, message: ' 必须输入用户名'},

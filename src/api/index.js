@@ -7,7 +7,7 @@ export function reqWeather(city) {
         jsonp(url, {
             param: 'callback'
         }, (error, response) => {
-            if (!error && response.status == 'success') {
+            if (!error && response.status === 'success') {
                 const {dayPictureUrl, weather} = response.results[0].weather_data[0];
                 resolve({dayPictureUrl, weather});
             } else {
