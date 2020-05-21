@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { UserOutlined ,LockOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
@@ -35,15 +35,18 @@ const validator = (value) => {
 const Login = () => {
     const history = useHistory();
     
-    // 判断是否已登录
-    if (storageUtils.getUser().username) {
-        memoryUtils.user = storageUtils.getUser();
-        history.replace('/');
-    }
+    useEffect(() => {
+        // 判断是否已登录
+        if (storageUtils.getUser().username) {
+            memoryUtils.user = storageUtils.getUser();
+            history.replace('/');
+        }
+    });
+    
     /*
     登录
     */
-    const login =async (values) => {
+    const login = async (values) => {
         let data = await reqLogin(values.username, values.password);
 
         if (data.code === 1) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { Layout } from 'antd';
-import memoryUtils from '../../utils/memoryUtils';
+import storageUtils from '../../utils/storageUtils';
 
 import LeftNav from '../../components/left-nav';
 import Header from '../../components/header';
@@ -15,11 +15,12 @@ import Home from '../home/home';
 import Product from '../product/product';
 import User from '../user/user';
 const { Footer, Sider, Content } = Layout;
-const Login = () =>  {
-    const user = memoryUtils.user;
+const Admin = () =>  {
+    let user = storageUtils.getUser();
     if (!user || !user.username) {
         return <Redirect to="/login" />
     }
+    
     return (
         <Layout style={{height: '100%'}}>
             <Sider>
@@ -46,4 +47,4 @@ const Login = () =>  {
     )
 }
 
-export default Login;
+export default Admin;

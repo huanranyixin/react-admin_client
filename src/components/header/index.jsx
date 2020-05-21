@@ -61,7 +61,6 @@ const Header = () => {
         Modal.confirm({
             content: '确定退出吗?',
             onOk: () => {
-                console.log('OK') // 移除保存的 user
                 storageUtils.removeUser();
                 memoryUtils.user = {}; // 跳转到 login
                 history.replace('/login')
