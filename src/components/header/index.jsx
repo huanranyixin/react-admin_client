@@ -4,7 +4,7 @@ import { Modal } from 'antd';
 
 import LinkButton from '../link-button';
 import menuList from '../../config/menuConfig';
-import {reqWeather} from '../../api';
+// import {reqWeather} from '../../api';
 import {formateDate} from '../../utils/dateUtils';
 import memoryUtils from '../../utils/memoryUtils';
 import storageUtils from '../../utils/storageUtils';
@@ -23,9 +23,9 @@ const getTitle = (path) => {
                 }
             })
         }
-    })
+    });
     return title;
-}
+};
 
 const Header = () => {
     const [sysTimeState, setSysTimeState] = useState('');
@@ -69,7 +69,7 @@ const Header = () => {
                 console.log('Cancel')
             },
         })
-    }
+    };
 
     return (
         <div className="header">
@@ -87,5 +87,5 @@ const Header = () => {
             </div>
         </div>
     )
-}
+};
 export default Header;

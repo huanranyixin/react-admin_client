@@ -30,7 +30,7 @@ var login = Mock.mock(/\/manage\/login/, 'post', function (options) {
 });
 
 // 获取一级或某个二级分类列表
-var login = Mock.mock(/\/manage\/category\/list/, 'post', function (options) {
+var getCategoryList = Mock.mock(/\/manage\/category\/list/, 'post', function (options) {
     let body = JSON.parse(options.body);
     if (body.username === 'admin' && body.password === 'admin') {
         return {
@@ -46,7 +46,8 @@ var login = Mock.mock(/\/manage\/category\/list/, 'post', function (options) {
 });
 
 const data = {
-    login
+    login,
+    getCategoryList
 };
 
 // 输出结果
